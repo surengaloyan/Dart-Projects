@@ -1,0 +1,100 @@
+import 'dart:async';  //for the Timer()
+import 'package:flutter/material.dart';
+
+void main() => runApp(MySecondApp());
+
+class MySecondApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MySecondAppState();
+  }
+}
+
+const mainColor = Color.fromARGB(255, 195, 237, 250);
+
+class _MySecondAppState extends State<MySecondApp> {
+  bool _loading = false;
+  double _progressValue = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loading = false;
+    _progressValue = 0.0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: Color.fromARGB(255, 114, 205, 233),
+        appBar: AppBar(
+          backgroundColor: mainColor,
+          centerTitle: true,
+          title: Text(
+            'Loading...',
+            style: TextStyle(
+              color: Color.fromARGB(255, 1, 33, 73),
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ),
+        body: Center(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: _loading
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      LinearProgressIndicator(
+                        value: _progressValue,
+                        color: mainColor,
+                        minHeight: 50,
+                      ),
+                      Text(
+                        '${(_progressValue * 100).round()} %',
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
+                      )
+                    ],
+                  )
+                : Text(
+                    'Tap to button to start loading',
+                    style: TextStyle(fontSize: 30),
+                  ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _loading = !_loading;
+              _progressValue = 0.0;
+              _loadingProgress();
+            });
+          },
+          child: Icon(Icons.cloud_download),
+          backgroundColor: mainColor,
+          foregroundColor: Color.fromARGB(255, 1, 33, 73),
+        ),
+      ),
+    );
+  }
+
+  void _loadingProgress() {
+    Timer.periodic(Duration(milliseconds: 500), (Timer t) {
+      setState(() {
+        _progressValue += 0.1;
+        if (_progressValue > 1.0) {
+          _loading = false;
+          _progressValue = 0.0;
+          t.cancel();
+          return;
+        }
+      });
+    });
+  }
+}
