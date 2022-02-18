@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+void main() => runApp(Counter());
+
+class Counter extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Counter',
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text("Tap '-' to decrement"),
+              Container(
+                child: CounterState(),
+                width: 150,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 114, 207, 230),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              const Text("Tap '+' to increment"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CounterState extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _CounterStateBar();
+  }
+}
+
+class _CounterStateBar extends State<CounterState> {
+  num _count = 50;
+
+  @override
+  void initState() {
+    super.initState();
+    _count = 50;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Ink(
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _count -= 1;
+              });
+            },
+            icon: const Icon(Icons.remove),
+            hoverColor: Colors.transparent,
+          ),
+        ),
+        Text(
+          '$_count',
+          style: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        Ink(
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                _count += 1;
+              });
+            },
+            icon: const Icon(Icons.add),
+            hoverColor: Colors.transparent,
+          ),
+        )
+      ],
+    );
+  }
+}
